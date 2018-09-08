@@ -14,6 +14,7 @@ namespace SignalRServer
     {
         public static void Main(string[] args)
         {
+            new Database.DatabaseAccessLayer(); // Will create the database
             CreateWebHostBuilder(args).Build().Run();
         }
 
