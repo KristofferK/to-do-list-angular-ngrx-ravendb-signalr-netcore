@@ -1,4 +1,5 @@
-<button (click)="addRandomTask()">Add random task</button>
+<input #taskField />
+<button (click)="addTask(taskField.value)">Add random task</button>
 <ol>
   <li *ngFor="let task of tasks">{{task.title}}</li>
 </ol>

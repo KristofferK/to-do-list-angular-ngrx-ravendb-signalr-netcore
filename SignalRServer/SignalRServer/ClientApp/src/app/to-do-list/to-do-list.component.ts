@@ -18,8 +18,8 @@ export class ToDoListComponent implements OnInit {
     })
   }
 
-  public addRandomTask() {
-    this.toDoListService.addTask('My task');
+  public addTask(title: string) {
+    this.toDoListService.addTask(title);
   }
 
 }
