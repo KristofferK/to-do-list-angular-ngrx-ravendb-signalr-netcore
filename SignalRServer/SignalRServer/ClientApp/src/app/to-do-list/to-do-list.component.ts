@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { ToDoListService } from '../to-do-list.service';
+import { Task } from '../models/task';
 
 @Component({
   selector: 'to-do-list',
@@ -7,29 +8,18 @@ import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
   styleUrls: ['./to-do-list.component.css']
 })
 export class ToDoListComponent implements OnInit {
-  private hubConnection: HubConnection;
-
-  constructor() { }
+  public tasks: Task[] = [];
+  constructor(private toDoListService: ToDoListService) { }
 
   ngOnInit() {
-    this.hubConnection = new HubConnectionBuilder()
-      .withUrl('https://localhost:44364/toDoHub')
-      .build();
-
-    this.hubConnection
-      .start()
-      .then(() => console.log('Connection started!'))
-      .catch(err => console.log('Error while establishing connection :('));
-
-    this.hubConnection.on('TaskAdded', (task: string) => {
-      alert('Someone added a task: ' + task)
-    });
+    this.toDoListService.tasks.subscribe(task => {
+      console.log('Received task from replay subject', task);
+      this.tasks.push(task);
+    })
   }
 
   public addRandomTask() {
-    this.hubConnection.invoke('AddTask', 'My task').then(e => {
-      console.log('AddTask completed ' + e);
-    })
+    this.toDoListService.addTask('My task');
   }
 
 }

@@ -10,7 +10,12 @@ namespace SignalRServer.Hubs
     {
         public async Task AddTask(string task)
         {
-            await Clients.All.SendAsync("TaskAdded", task);
+            Controllers.TasksController.tasks.Add(task);
+            await Clients.All.SendAsync("TaskAdded", new
+            {
+                id = Guid.NewGuid(),
+                title = task
+            });
         }
     }
 }
