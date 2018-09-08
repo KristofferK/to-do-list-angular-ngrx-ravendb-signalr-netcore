@@ -19,8 +19,7 @@ namespace SignalRServer.Hubs
                 Completed = false
             };
 
-            Controllers.TasksController.tasks.Add(task);
-            database.Add(task);
+            database.Put(task);
             await Clients.All.SendAsync("TaskAdded", task);
         }
     }
