@@ -1,27 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SignalRServer.Models;
 
 namespace SignalRServer.Controllers
 {
     [Route("api/[controller]")]
     public class TasksController : Controller
     {
-        public static List<string> tasks = new List<string>()
+        public static List<Task> tasks = new List<Task>()
         {
-            "Clean room", "Clean web browser history", "Feed cat", "Go to gym", "Cook dinner"
+            new Task()
+            {
+                Title = "Clean room",
+                Id = Guid.NewGuid().ToString(),
+                Completed = true
+            },
+            new Task()
+            {
+                Title = "Feed cat",
+                Id = Guid.NewGuid().ToString(),
+                Completed = true
+            },
+            new Task()
+            {
+                Title = "Go to gym",
+                Id = Guid.NewGuid().ToString(),
+                Completed = false
+            }
         };
 
         [HttpGet("[action]")]
-        public IEnumerable<dynamic> Tasks()
+        public IEnumerable<Task> Tasks()
         {
-            return tasks.Select(task => new
-            {
-                id = Guid.NewGuid().ToString(),
-                title = task
-            });
+            return tasks;
         }
     }
 }

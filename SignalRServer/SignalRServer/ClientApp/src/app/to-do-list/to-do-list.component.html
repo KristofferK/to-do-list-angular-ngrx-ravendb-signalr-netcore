@@ -1,5 +1,12 @@
 <input #taskField />
 <button (click)="addTask(taskField.value)">Add random task</button>
+
+<h2>Tasks yet to be compelted</h2>
 <ol>
-  <li *ngFor="let task of tasks">{{task.title}}</li>
+  <span *ngFor="let task of tasks"><li *ngIf="(!task.completed)">{{task.title}} (complete task)</li></span>
+</ol>
+
+<h2>Completed tasks</h2>
+<ol>
+  <span *ngFor="let task of tasks"><li *ngIf="(task.completed)">{{task.title}}</li></span>
 </ol>

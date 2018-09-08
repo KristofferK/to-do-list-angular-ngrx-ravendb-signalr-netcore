@@ -8,14 +8,16 @@ namespace SignalRServer.Hubs
 {
     public class ToDoHub : Hub
     {
-        public async Task AddTask(string task)
+        public async Task AddTask(string taskTitle)
         {
-            Controllers.TasksController.tasks.Add(task);
-            await Clients.All.SendAsync("TaskAdded", new
+            var task = new Models.Task()
             {
-                id = Guid.NewGuid(),
-                title = task
-            });
+                Id = Guid.NewGuid().ToString(),
+                Title = taskTitle,
+                Completed = false
+            };
+            Controllers.TasksController.tasks.Add(task);
+            await Clients.All.SendAsync("TaskAdded", task);
         }
     }
 }
