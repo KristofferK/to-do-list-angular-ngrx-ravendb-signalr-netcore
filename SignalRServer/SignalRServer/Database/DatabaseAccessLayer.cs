@@ -1,8 +1,6 @@
 ﻿using Raven.Client.Documents;
 using Raven.Client.Documents.Commands;
 using Raven.Client.Documents.Session;
-using Raven.Client.ServerWide;
-using Raven.Client.ServerWide.Operations;
 using SignalRServer.Models;
 using Sparrow.Json;
 using System;
@@ -42,7 +40,7 @@ namespace SignalRServer.Database
             var session = store.OpenSession();
             var command = new GetDocumentsCommand(start: 0, pageSize: 1024);
             session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-
+            
             return command.Result.Results
                 .OfType<BlittableJsonReaderObject>()
                 .Select(obj => new Task()

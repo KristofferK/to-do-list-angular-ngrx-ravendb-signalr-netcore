@@ -3,10 +3,10 @@
 
 <h2>Tasks yet to be compelted</h2>
 <ol>
-  <span *ngFor="let task of tasks"><li *ngIf="(!task.completed)">{{task.title}} (complete task)</li></span>
+  <span *ngFor="let task of tasks"><li *ngIf="(!task.completed)" (click)="completeTask(task.id, task.title, true)">{{task.title}}</li></span>
 </ol>
 
 <h2>Completed tasks</h2>
 <ol>
-  <span *ngFor="let task of tasks"><li *ngIf="(task.completed)">{{task.title}} (uncomplete task)</li></span>
+  <span *ngFor="let task of tasks"><li *ngIf="(task.completed)" (click)="completeTask(task.id, task.title, false)">{{task.title}}</li></span>
 </ol>

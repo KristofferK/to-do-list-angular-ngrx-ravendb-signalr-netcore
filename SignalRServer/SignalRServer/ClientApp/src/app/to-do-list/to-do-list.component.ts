@@ -22,4 +22,7 @@ export class ToDoListComponent implements OnInit {
     this.toDoListService.addTask(title);
   }
 
+  public completeTask(id: string, title: string, completed: boolean) {
+    this.toDoListService.completeTask(id, title, completed);
+  }
 }

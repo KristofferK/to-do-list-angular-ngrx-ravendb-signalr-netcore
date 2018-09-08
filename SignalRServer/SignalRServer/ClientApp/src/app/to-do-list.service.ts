@@ -25,16 +25,24 @@ export class ToDoListService {
       this.tasks.next(task);
     });
 
-    this.getTasksFromApi();
-  }
+    this.hubConnection.on('TaskCompleteFlagChanged', (task: Task) => {
+      alert('Must act on TaskCompleteFlagChanged');
+    });
 
-  public addTask(task: string) {
-    this.hubConnection.invoke('AddTask', task);
+    this.getTasksFromApi();
   }
 
   private getTasksFromApi(): void {
     this.http.get<Task[]>('https://localhost:44364/api/Tasks/Tasks').subscribe((tasks: Task[]) => {
       tasks.forEach(task => this.tasks.next(task))
     });
+  }
+
+  public addTask(task: string) {
+    this.hubConnection.invoke('AddTask', task);
+  }
+
+  public completeTask(id: string, title: string, completed: boolean) {
+    this.hubConnection.invoke('CompleteTask', id, title, completed);
   }
 }
