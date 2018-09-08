@@ -10,6 +10,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 export class ToDoListService {
   private hubConnection: HubConnection;
   public tasks: ReplaySubject<Task> = new ReplaySubject<Task>();
+  public taskChanges: ReplaySubject<Task> = new ReplaySubject<Task>();
 
   constructor(private http: HttpClient) {
     this.hubConnection = new HubConnectionBuilder()
@@ -26,7 +27,7 @@ export class ToDoListService {
     });
 
     this.hubConnection.on('TaskCompleteFlagChanged', (task: Task) => {
-      alert('Must act on TaskCompleteFlagChanged');
+      this.taskChanges.next(task);
     });
 
     this.getTasksFromApi();

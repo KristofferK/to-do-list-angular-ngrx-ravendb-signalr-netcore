@@ -16,6 +16,13 @@ export class ToDoListComponent implements OnInit {
       console.log('Received task from replay subject', task);
       this.tasks.push(task);
     })
+    this.toDoListService.taskChanges.subscribe(task => {
+      console.log('Must update', task);
+      const index = this.tasks.findIndex(e => e.id == task.id);
+      if (index != -1) {
+        this.tasks[index] = task;
+      }
+    })
   }
 
   public addTask(title: string) {
