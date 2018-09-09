@@ -11,6 +11,7 @@ export class ToDoListService {
   private hubConnection: HubConnection;
   public tasks: ReplaySubject<Task> = new ReplaySubject<Task>();
   public taskChanges: ReplaySubject<Task> = new ReplaySubject<Task>();
+  public taskDeletes: ReplaySubject<string> = new ReplaySubject<string>();
 
   constructor(private http: HttpClient) {
     this.hubConnection = new HubConnectionBuilder()
@@ -30,6 +31,10 @@ export class ToDoListService {
       this.taskChanges.next(task);
     });
 
+    this.hubConnection.on('TaskDeleted', (id: string) => {
+      this.taskDeletes.next(id);
+    });
+
     this.getTasksFromApi();
   }
 
@@ -45,5 +50,9 @@ export class ToDoListService {
 
   public completeTask(id: string, title: string, completed: boolean) {
     this.hubConnection.invoke('CompleteTask', id, title, completed);
+  }
+
+  public deleteTask(id: string) {
+    this.hubConnection.invoke('DeleteTask', id);
   }
 }

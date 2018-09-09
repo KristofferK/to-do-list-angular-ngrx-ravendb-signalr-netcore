@@ -8,5 +8,10 @@
 
 <h2>Completed tasks</h2>
 <ol>
-  <span *ngFor="let task of tasks"><li *ngIf="(task.completed)" (click)="completeTask(task.id, task.title, false)">{{task.title}}</li></span>
+  <span *ngFor="let task of tasks">
+    <li *ngIf="(task.completed)">
+      <span (click)="completeTask(task.id, task.title, false)">{{task.title}}</span> 
+      <span (click)="deleteTask(task.id)">(DELETE)</span>
+    </li>
+  </span>
 </ol>

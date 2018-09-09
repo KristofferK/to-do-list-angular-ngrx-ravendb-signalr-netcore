@@ -36,5 +36,11 @@ namespace SignalRServer.Hubs
             database.Put(task);
             await Clients.All.SendAsync("TaskCompleteFlagChanged", task);
         }
+
+        public async Task DeleteTask(string id)
+        {
+            database.Delete(id);
+            await Clients.All.SendAsync("TaskDeleted", id);
+        }
     }
 }

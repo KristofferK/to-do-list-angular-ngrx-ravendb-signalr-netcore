@@ -22,6 +22,23 @@ namespace SignalRServer.Database
             }
         }
 
+        public List<Task> GetTasks()
+        {
+            var session = store.OpenSession();
+            var command = new GetDocumentsCommand(start: 0, pageSize: 1024);
+            session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+
+            return command.Result.Results
+                .OfType<BlittableJsonReaderObject>()
+                .Select(obj => new Task()
+                {
+                    Id = ((BlittableJsonReaderObject)obj["@metadata"])["@id"].ToString(),
+                    Title = obj["Title"].ToString(),
+                    Completed = (bool)obj["Completed"]
+                })
+                .ToList();
+        }
+
         public void Put(Task task)
         {
             var session = store.OpenSession();
@@ -35,21 +52,11 @@ namespace SignalRServer.Database
             session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
         }
 
-        public List<Task> GetTasks()
+        public void Delete(string id)
         {
             var session = store.OpenSession();
-            var command = new GetDocumentsCommand(start: 0, pageSize: 1024);
+            var command = new DeleteDocumentCommand(id, null);
             session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-            
-            return command.Result.Results
-                .OfType<BlittableJsonReaderObject>()
-                .Select(obj => new Task()
-                {
-                    Id = ((BlittableJsonReaderObject)obj["@metadata"])["@id"].ToString(),
-                    Title = obj["Title"].ToString(),
-                    Completed = (bool)obj["Completed"]
-                })
-                .ToList();
         }
     }
 }

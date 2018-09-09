@@ -15,12 +15,22 @@ export class ToDoListComponent implements OnInit {
     this.toDoListService.tasks.subscribe(task => {
       console.log('Received task from replay subject', task);
       this.tasks.push(task);
-    })
+    });
+
     this.toDoListService.taskChanges.subscribe(task => {
       console.log('Must update', task);
-      const index = this.tasks.findIndex(e => e.id == task.id);
+      const index = this.tasks.findIndex(e => e.id === task.id);
       if (index != -1) {
         this.tasks[index] = task;
+      }
+    });
+
+    this.toDoListService.taskDeletes.subscribe(id => {
+      console.log('Must delete', id);
+      const index = this.tasks.findIndex(e => e.id === id);
+      console.log('Index is', index);
+      if (index != -1) {
+        this.tasks.splice(index, 1);
       }
     })
   }
@@ -31,5 +41,9 @@ export class ToDoListComponent implements OnInit {
 
   public completeTask(id: string, title: string, completed: boolean) {
     this.toDoListService.completeTask(id, title, completed);
+  }
+
+  public deleteTask(id: string) {
+    this.toDoListService.deleteTask(id);
   }
 }
