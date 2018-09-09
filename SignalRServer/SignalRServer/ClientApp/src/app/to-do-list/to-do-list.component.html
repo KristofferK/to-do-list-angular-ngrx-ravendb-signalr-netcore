@@ -1,19 +1,32 @@
-<input #taskField />
-<button (click)="addTask(taskField.value)">Add task</button>
 
-<h2>Tasks yet to be completed</h2>
-<ol>
-  <span *ngFor="let task of tasks">
-    <li *ngIf="(!task.completed)" (click)="completeTask(task.id, task.title, true)">{{task.title}}</li>
-  </span>
-</ol>
+<div class="ui-g">
+  <div class="ui-g-12">
+    <input pInputText #taskField />&nbsp;
+    <p-button label="Add task" icon="pi pi-plus" (onClick)="addTask(taskField.value)"></p-button>
+  </div>
+</div>
 
-<h2>Completed tasks</h2>
-<ol>
-  <span *ngFor="let task of tasks">
-    <li *ngIf="(task.completed)">
-      <span (click)="completeTask(task.id, task.title, false)">{{task.title}}</span> 
-      <span (click)="deleteTask(task.id)">(DELETE)</span>
-    </li>
-  </span>
-</ol>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6">
+    <p-panel header="Tasks yet to be completed">
+      <ol>
+        <span *ngFor="let task of tasks">
+          <li *ngIf="(!task.completed)" (click)="completeTask(task.id, task.title, true)">{{task.title}}</li>
+        </span>
+      </ol>
+    </p-panel>
+  </div>
+
+  <div class="ui-g-12 ui-md-6">
+    <p-panel header="Completed tasks">
+      <ol>
+        <span *ngFor="let task of tasks">
+          <li *ngIf="(task.completed)">
+            <span (click)="completeTask(task.id, task.title, false)">{{task.title}}</span>&nbsp;
+            <span (click)="deleteTask(task.id)">(DELETE)</span>
+          </li>
+        </span>
+      </ol>
+    </p-panel>
+  </div>
+</div>
